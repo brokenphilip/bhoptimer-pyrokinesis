@@ -1,4 +1,5 @@
-# bhoptimer-pyrokinesis (WIP)
+# bhoptimer-pyrokinesis
+**This is a WIP plugin, currently unfinished and inoperable.**
 
 A fork of [shavit's bhop timer](https://github.com/shavitush/bhoptimer), for use with the `jump_pyrokinesis_rc1` jump map.
 - Timer plugin custom tailored for Pyrokinesis
