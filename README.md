@@ -1,6 +1,4 @@
 # bhoptimer-pyrokinesis
-**This is a WIP plugin, currently unfinished and inoperable.**
-
 A stripped down version of [shavit's bhop timer](https://github.com/shavitush/bhoptimer), for use with the `jump_pyrokinesis_rc1` jump map.
 - Timer plugin custom tailored for Pyrokinesis
 - Includes start/end zones for each of the 5 courses, as well as various glitch zones to prevent cheating/bugs
