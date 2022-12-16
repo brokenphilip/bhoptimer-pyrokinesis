@@ -449,7 +449,7 @@
 	"ZoneStopEnter"
 	{
 		"#format"	"{1:s},{2:s},{3:s}"
-		"en"		"{1}Your timer has been stopped for entering a {2}glitch zone{3}."
+		"en"		"{1}Your timer has been stopped."
 	}
 	"ZoneStageEnter"
 	{

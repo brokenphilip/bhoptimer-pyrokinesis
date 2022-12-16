@@ -202,6 +202,15 @@ native int Shavit_GetHUDSettings(int client);
  */
 native int Shavit_GetHUD2Settings(int client);
 
+/**
+ * Toggles a player's HUD. Does not save cookie.
+ *
+ * @param client                    Client index.
+ * @param hud                       HUD setting.
+ * @return                          HUD settings.
+ */
+native void Shavit_ToggleHUD(int client, int hud);
+
 public SharedPlugin __pl_shavit_hud =
 {
 	name = "shavit-hud",

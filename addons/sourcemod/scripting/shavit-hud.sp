@@ -137,6 +137,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	CreateNative("Shavit_ForceHUDUpdate", Native_ForceHUDUpdate);
 	CreateNative("Shavit_GetHUDSettings", Native_GetHUDSettings);
 	CreateNative("Shavit_GetHUD2Settings", Native_GetHUD2Settings);
+	CreateNative("Shavit_ToggleHUD", Native_ToggleHUD);
 
 	// registers library, check "bool LibraryExists(const char[] name)" in order to use with other plugins
 	RegPluginLibrary("shavit-hud");
@@ -540,6 +541,23 @@ void FillerHintText(int client)
 	PrintHintText(client, "...");
 	gF_ConnectTime[client] = GetEngineTime();
 	gB_FirstPrint[client] = true;
+}
+
+public int Native_ToggleHUD(Handle handler, int numParams)
+{
+	int client = GetNativeCell(1);
+	int hud = GetNativeCell(2);
+
+	if(!IsValidClient(client))
+	{
+		ThrowNativeError(200, "Invalid client index %d", client);
+		return -1;
+	}
+
+	// do not save to cookie, or notify chat, just change it directly
+	gI_HUDSettings[client] ^= hud;
+
+	return 1;
 }
 
 void ToggleHUD(int client, int hud, bool chat)
