@@ -12,4 +12,4 @@ A fork of [shavit's bhop timer](https://github.com/shavitush/bhoptimer), for use
 # Requirements (on top of bhop timer's requirements)
 - [TF2Attributes](https://github.com/FlaminSarge/tf2attributes)
 - [TF2Items](https://forums.alliedmods.net/showthread.php?p=1050170)
-
+- [TF2Items GiveWeapon](https://forums.alliedmods.net/showthread.php?p=1337899)
