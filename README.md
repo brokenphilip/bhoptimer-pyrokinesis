@@ -12,5 +12,5 @@ A stripped down version of [shavit's bhop timer](https://github.com/shavitush/bh
 - [TF2Attributes](https://github.com/FlaminSarge/tf2attributes)
 - [TF2Items](https://forums.alliedmods.net/showthread.php?p=1050170)
 - [TF2Items GiveWeapon](https://forums.alliedmods.net/showthread.php?p=1337899)
-  - Currently requires as a workaround because giving weapons doesn't work otherwise
+  - Currently required as a workaround, since giving weapons doesn't work otherwise
   - It is strongly recommended you set `tf2items_giveweapon_notify 0` beforehand
