@@ -187,9 +187,9 @@ public void OnPluginStart()
 	gCV_SpecNameSymbolLength = new Convar("shavit_hud_specnamesymbollength", "32", "Maximum player name length that should be displayed in spectators panel", 0, true, 0.0, true, float(MAX_NAME_LENGTH));
 	gCV_BlockYouHaveSpottedHint = new Convar("shavit_hud_block_spotted_hint", "1", "Blocks the hint message for spotting an enemy or friendly (which covers the center HUD)", 0, true, 0.0, true, 1.0);
 
-	char defaultHUD[8];
-	IntToString(HUD_DEFAULT, defaultHUD, 8);
-	gCV_DefaultHUD = new Convar("shavit_hud_default", defaultHUD, "Default HUD settings as a bitflag\n"
+	//char defaultHUD[8];
+	//IntToString(HUD_DEFAULT, defaultHUD, 8);
+	gCV_DefaultHUD = new Convar("shavit_hud_default", /*defaultHUD*/ "1935", "Default HUD settings as a bitflag\n"
 		..."HUD_MASTER				1\n"
 		..."HUD_CENTER				2\n"
 		..."HUD_ZONEHUD				4\n"
@@ -208,8 +208,8 @@ public void OnPluginStart()
 		..."HUD_SPECTATORSDEAD       65536\n"
 	);
 
-	IntToString(HUD_DEFAULT2, defaultHUD, 8);
-	gCV_DefaultHUD2 = new Convar("shavit_hud2_default", defaultHUD, "Default HUD2 settings as a bitflag of what to remove\n"
+	//IntToString(HUD_DEFAULT2, defaultHUD, 8);
+	gCV_DefaultHUD2 = new Convar("shavit_hud2_default", /*defaultHUD*/ "2060", "Default HUD2 settings as a bitflag of what to remove\n"
 		..."HUD2_TIME				1\n"
 		..."HUD2_SPEED				2\n"
 		..."HUD2_JUMPS				4\n"

@@ -56,7 +56,7 @@ char gS_CheatCommands[][] = {
 
 void Anti_sv_cheats_cvars()
 {
-	gCV_DisableSvCheats = new Convar("shavit_core_disable_sv_cheats", "1", "Force sv_cheats to 0.", 0, true, 0.0, true, 1.0);
+	gCV_DisableSvCheats = new Convar("shavit_core_disable_sv_cheats", "0", "Force sv_cheats to 0.", 0, true, 0.0, true, 1.0);
 
 #if !DEBUG
 	sv_cheats = FindConVar("sv_cheats");
