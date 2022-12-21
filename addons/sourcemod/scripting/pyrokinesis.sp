@@ -21,7 +21,8 @@
 // 0.6b - Added a !fix command to manually reset the hint text
 // 0.6c - Replace simple-bhop with tf-bhop
 // 1.0  - Reorganize project and release to GitHub
-#define VERSION "1.0"
+// 1.1  - Switch to new SetEntityCollisionGroup
+#define VERSION "1.1"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
@@ -173,7 +174,7 @@ public void Event_Spawn(Event event, char[] name, bool dontBroadcast)
 		FixHUD(client);
 
 		// Make enemies pass through each other
-		SetEntData(client, FindSendPropInfo("CBaseEntity", "m_CollisionGroup"), 2, 4, true);
+		SetEntityCollisionGroup(client, 2);
 
 		// Wait until the weapons are stripped in OnGiveNamedItem, then force-equip the Detonator
 		CreateTimer(0.1, EquipDet, client, TIMER_FLAG_NO_MAPCHANGE);
