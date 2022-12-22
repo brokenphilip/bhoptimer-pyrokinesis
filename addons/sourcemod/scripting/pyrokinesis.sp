@@ -11,7 +11,7 @@
 // todo: (bhop timer) remove jumps, or reimplement to use detjumps
 // todo: (bhop timer) show +attack(2) in !keys
 
-#define VERSION "1.0.2"
+#define VERSION "1.0.1"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
@@ -85,9 +85,12 @@ public void OnPluginStart()
 
 public Action NormalSoundHook(int clients[MAXPLAYERS], int &numClients, char sample[PLATFORM_MAX_PATH], int &entity, int &channel, float &volume, int &level, int &pitch, int &flags, char soundEntry[PLATFORM_MAX_PATH], int &seed)
 {
-	if (StrContains(sample, "vo/pyro_Pain", false) != -1 ||
-	    StrContains(sample, "vo/pyro_AutoOnFire", false) != -1)
-		return Plugin_Stop;
+	if (isJumpPK)
+	{
+		if (StrContains(sample, "vo/pyro_Pain", false) != -1 ||
+		    StrContains(sample, "vo/pyro_AutoOnFire", false) != -1)
+			return Plugin_Stop;
+	}
 
 	return Plugin_Continue;
 }
