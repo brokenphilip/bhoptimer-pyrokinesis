@@ -11,18 +11,7 @@
 // todo: (bhop timer) remove jumps, or reimplement to use detjumps
 // todo: (bhop timer) show +attack(2) in !keys
 
-// 0.1  - Initial version
-// 0.2  - Removed resupply zones to prevent faster refire rates using load_itempreset
-// 0.3  - Fixed checking non-existent netprops for canteens
-// 0.4  - Fixed unnecessary line when blocking resupply zone spawning
-// 0.5  - Improved late load code. Fixed respawning before picking a team
-// 0.6  - Force suicide upon first spawn to fix hint text
-// 0.6a - Replaced suicide mechanic for fixing hint text with a custom ToggleHUD native
-// 0.6b - Added a !fix command to manually reset the hint text
-// 0.6c - Replace simple-bhop with tf-bhop
-// 1.0  - Reorganize project and release to GitHub
-// 1.1  - Switch to new SetEntityCollisionGroup
-#define VERSION "1.1"
+#define VERSION "1.0.2"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
@@ -50,6 +39,8 @@ native void Shavit_ToggleHUD(int client, int hud);
 
 public void OnPluginStart()
 {
+	AddNormalSoundHook(NormalSoundHook);
+
 	// Account for late plugin load
 	for (int i = 1; i <= MaxClients; i++)
 	{
@@ -90,6 +81,15 @@ public void OnPluginStart()
 	//TF2Items_SetAttribute(hDetonator, 5, 551, 1.0);
 
 	*/
+}
+
+public Action NormalSoundHook(int clients[MAXPLAYERS], int &numClients, char sample[PLATFORM_MAX_PATH], int &entity, int &channel, float &volume, int &level, int &pitch, int &flags, char soundEntry[PLATFORM_MAX_PATH], int &seed)
+{
+	if (StrContains(sample, "vo/pyro_Pain", false) != -1 ||
+	    StrContains(sample, "vo/pyro_AutoOnFire", false) != -1)
+		return Plugin_Stop;
+
+	return Plugin_Continue;
 }
 
 public Action Command_Fix(int client, int args)
