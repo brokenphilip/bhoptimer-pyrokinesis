@@ -11,7 +11,7 @@
 // todo: (bhop timer) remove jumps, or reimplement to use detjumps
 // todo: (bhop timer) show +attack(2) in !keys
 
-#define VERSION "1.0.1"
+#define VERSION "1.0.2"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
