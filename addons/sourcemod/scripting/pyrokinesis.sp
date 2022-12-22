@@ -11,7 +11,7 @@
 // todo: (bhop timer) remove jumps, or reimplement to use detjumps
 // todo: (bhop timer) show +attack(2) in !keys
 
-#define VERSION "1.0.2"
+#define VERSION "1.0.3"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
@@ -138,7 +138,11 @@ public void OnMapStart()
 public void OnEntityCreated(int entity, const char[] classname)
 {
 	// !!! Must wait for the entity to spawn before killing it
-	if (isJumpPK && StrEqual(classname, "func_regenerate")) SDKHook(entity, SDKHook_Spawn, Hook_OnResupEntSpawn); 
+	if (isJumpPK)
+	{
+		if (StrEqual(classname, "func_regenerate"))
+			SDKHook(entity, SDKHook_Spawn, Hook_OnResupEntSpawn);
+	}
 } 
 
 public Action Hook_OnResupEntSpawn(int entity)
@@ -162,8 +166,7 @@ public void Event_Spawn(Event event, char[] name, bool dontBroadcast)
 		if (GetClientTeam(client) < 2)
 			return;
 
-		TFClassType class = TF2_GetPlayerClass(client);
-		if (class != TFClass_Pyro)
+		if (TF2_GetPlayerClass(client) != TFClass_Pyro)
 		{
 			PrintToChat(client, "[SM] You can only play Pyro on this map.");
 			TF2_SetPlayerClass(client, TFClass_Pyro);
@@ -234,6 +237,38 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
 	return Plugin_Continue;
 }
 
+public Action TF2Items_OnGiveNamedItem(int client, char[] classname, int index, Handle& hItem)
+{
+	if (isJumpPK)
+	{
+		// if we're about to get a pyro secondary that's not the detonator, give a detonator instead
+		// best way i could think of to replicate weapon replacing behavior
+		// todo: ideally revisit this at some point, there's gotta be a better way than a fucking giveweapon command
+		switch (index)
+		{
+			case PYRO_SECONDARIES: 
+			{
+				// Does not work for some reason, despite working just fine before
+				//TF2Items_GiveNamedItem(client, hDetonator);
+
+				// Don't like this, but it doesn't work either
+				//TF2Items_GiveWeapon(client, 351);
+
+				// Fuck me sideways
+				ServerCommand("sm_givew #%d 351", GetClientUserId(client));
+
+				// and no, doesn't work in prehook either :3 i love tf2items !!
+			}
+		}
+
+		// If it's not the Detonator or a cosmetic
+		if (index != 351 && !StrEqual(classname, "tf_wearable", false))
+			return Plugin_Stop;
+	}
+
+	return Plugin_Continue;
+}
+
 public void TF2Items_OnGiveNamedItem_Post(int client, char[] classname, int index, int level, int quality, int entity)
 {
 	if (isJumpPK)
@@ -244,46 +279,5 @@ public void TF2Items_OnGiveNamedItem_Post(int client, char[] classname, int inde
 			TF2Attrib_SetByName(entity, "blast dmg to self increased", 0.001);
 			TF2Attrib_SetByName(entity, "ammo regen", 1.0);
 		}
-
-		// If it's not the Detonator or a cosmetic
-		else if (!StrEqual(classname, "tf_wearable", false))
-		{
-			TF2_RemoveWeaponByEnt(client, entity);
-
-			switch (index)
-			{
-				case PYRO_SECONDARIES: 
-				{
-					// Does not work for some reason, despite working just fine before
-					//TF2Items_GiveNamedItem(client, hDetonator);
-
-					// Don't like this, but it doesn't work either
-					//TF2Items_GiveWeapon(client, 351);
-
-					// Fuck me sideways
-					ServerCommand("sm_givew #%d 351", GetClientUserId(client));
-				}
-			}
-		}
-	}
-}
-
-stock void TF2_RemoveWeaponByEnt(int client, int ent)
-{
-	if (IsValidEntity(ent))
-	{
-		// Canteens do not have extra wearable netprops
-		// This does not apply to spellbooks or other action items (wtf)
-		if (HasEntProp(ent, Prop_Send, "m_hExtraWearable"))
-		{
-			int extraWearable = GetEntPropEnt(ent, Prop_Send, "m_hExtraWearable");
-			if (extraWearable != -1) TF2_RemoveWearable(client, extraWearable);
-
-			extraWearable = GetEntPropEnt(ent, Prop_Send, "m_hExtraWearableViewModel");
-			if (extraWearable != -1) TF2_RemoveWearable(client, extraWearable);
-		}
-
-		RemovePlayerItem(client, ent);
-		AcceptEntityInput(ent, "Kill");
 	}
 }
