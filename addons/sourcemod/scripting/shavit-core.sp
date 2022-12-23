@@ -51,6 +51,9 @@
 #pragma newdecls required
 #pragma semicolon 1
 
+// brokenphilip/bhoptimer-pyrokinesis: defines from pyrokinesis
+native bool PKMngr_IsJumpPK();
+
 // game type (CS:S/CS:GO/TF2)
 EngineVersion gEV_Type = Engine_Unknown;
 bool gB_Protobuf = false;
@@ -240,6 +243,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 	// registers library, check "bool LibraryExists(const char[] name)" in order to use with other plugins
 	RegPluginLibrary("shavit");
+
+	MarkNativeAsOptional("PKMngr_IsJumpPK");
 
 	gB_Late = late;
 
@@ -2843,18 +2848,27 @@ public void PreThinkPost(int client)
 {
 	if(IsPlayerAlive(client))
 	{
-		if(!gB_Zones || !Shavit_InsideZone(client, Zone_Airaccelerate, -1))
+		if (LibraryExists("pyrokinesis") && !PKMngr_IsJumpPK())
 		{
-			sv_airaccelerate.FloatValue = GetStyleSettingFloat(gA_Timers[client].bsStyle, "airaccelerate");
+			// don't set these values if we're not on pyrokinesis
+			// servers that don't run just this map might like to change these
+			// i really wish major plugins like this actually took their time to not be so intrusive, but alas
 		}
 		else
 		{
-			sv_airaccelerate.FloatValue = gF_ZoneAiraccelerate[client];
-		}
+			if(!gB_Zones || !Shavit_InsideZone(client, Zone_Airaccelerate, -1))
+			{
+				sv_airaccelerate.FloatValue = GetStyleSettingFloat(gA_Timers[client].bsStyle, "airaccelerate");
+			}
+			else
+			{
+				sv_airaccelerate.FloatValue = gF_ZoneAiraccelerate[client];
+			}
 
-		if(sv_enablebunnyhopping != null)
-		{
-			sv_enablebunnyhopping.BoolValue = GetStyleSettingBool(gA_Timers[client].bsStyle, "bunnyhopping");
+			if(sv_enablebunnyhopping != null)
+			{
+				sv_enablebunnyhopping.BoolValue = GetStyleSettingBool(gA_Timers[client].bsStyle, "bunnyhopping");
+			}
 		}
 
 		MoveType mtMoveType = GetEntityMoveType(client);
@@ -3699,6 +3713,10 @@ void UpdateAiraccelerate(int client, float airaccelerate)
 
 void UpdateStyleSettings(int client)
 {
+	// not pyrokinesis, don't replicate these cvars
+	if (LibraryExists("pyrokinesis") && !PKMngr_IsJumpPK())
+		return;
+
 	if(sv_autobunnyhopping != null)
 	{
 		sv_autobunnyhopping.ReplicateToClient(client, (GetStyleSettingBool(gA_Timers[client].bsStyle, "autobhop") && gB_Auto[client])? "1":"0");

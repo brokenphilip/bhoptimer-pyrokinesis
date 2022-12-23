@@ -11,7 +11,7 @@
 // todo: (bhop timer) remove jumps, or reimplement to use detjumps
 // todo: (bhop timer) show +attack(2) in !keys
 
-#define VERSION "1.0.3"
+#define VERSION "1.0.4"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
@@ -36,6 +36,23 @@ bool isJumpPK = false;
 #define HUD_CENTER (1 << 1)
 native int Shavit_GetHUDSettings(int client);
 native void Shavit_ToggleHUD(int client, int hud);
+
+public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
+{
+	CreateNative("PKMngr_IsJumpPK", Native_IsJumpPK);
+
+	RegPluginLibrary("pyrokinesis");
+
+	MarkNativeAsOptional("Shavit_GetHUDSettings");
+	MarkNativeAsOptional("Shavit_ToggleHUD");
+
+	return APLRes_Success;
+}
+
+public int Native_IsJumpPK(Handle handler, int numParams)
+{
+	return isJumpPK;
+}
 
 public void OnPluginStart()
 {

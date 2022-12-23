@@ -137,6 +137,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	CreateNative("Shavit_ForceHUDUpdate", Native_ForceHUDUpdate);
 	CreateNative("Shavit_GetHUDSettings", Native_GetHUDSettings);
 	CreateNative("Shavit_GetHUD2Settings", Native_GetHUD2Settings);
+
+	// brokenphilip/bhoptimer-pyrokinesis: create togglehud native to fix hinthud (lazy, todo find better hud to use)
 	CreateNative("Shavit_ToggleHUD", Native_ToggleHUD);
 
 	// registers library, check "bool LibraryExists(const char[] name)" in order to use with other plugins
