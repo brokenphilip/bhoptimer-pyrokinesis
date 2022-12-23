@@ -7,17 +7,16 @@
 #include <tf2attributes>
 #include <tf2items>
 
-// todo: !hide players (should i implement this here or in bhop timer?)
 // todo: (bhop timer) remove jumps, or reimplement to use detjumps
 // todo: (bhop timer) show +attack(2) in !keys
 
-#define VERSION "1.0.4"
+#define VERSION "1.0.5"
 
 #define MAP_NAME "jump_pyrokinesis_rc1"
 
 // There's a higher chance Valve will break the signature for CBaseWeapon::GetSlot in a random update than add a new weapon to the game
 // Might as well hardcode all of Pyro's secondaries to save myself the trouble of reverse-engineering TF2 every few weeks
-// 351 is the Detonator
+// 351 is the Detonator, see below why we don't use it here
 #define PYRO_SECONDARIES 12, 39, 199, /*351,*/ 415, 595, 740, 1081, 1141, 1153, 1179, 1180, 15003, 15016, 15044, 15047, 15085, 15109, 15132, 15133, 15152
 
 public Plugin myinfo =
@@ -133,11 +132,12 @@ public void OnMapStart()
 	if (!isJumpPK)
 	{
 		LogMessage("Pyrokinesis not detected, disabling shavit's bhop timer...");
-		// TODO: why are we not unloading these?
+		// TODO: why are we not unloading these? i assume it's lateload stuff, need to retest...
 		//ServerCommand("sm plugins unload shavit-core");
 		//ServerCommand("sm plugins unload shavit-zones");
 		//ServerCommand("sm plugins unload shavit-wr");
 		ServerCommand("sm plugins unload shavit-hud");
+		ServerCommand("sm plugins unload hide");
 	}
 	else
 	{
@@ -233,14 +233,14 @@ public void Event_Activate(Event event, const char[] name, bool dontBroadcast)
 	if (isJumpPK)
 	{
 		int client = GetClientOfUserId(event.GetInt("userid"));
-		CreateTimer(10.0, CmdHelpAd, client, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(10.0, HelpAdvert, client, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
 
-public Action CmdHelpAd(Handle timer, int client)
+public Action HelpAdvert(Handle timer, int client)
 {
 	PrintToChat(client, "[SM] Commands: !wr for records on A (go to !main), !bwr 1 to 4 for records on B-F (go to !b1 to !b4)");
-	PrintToChat(client, "[SM] If the HUD is broken (gray square in the middle), type !fix");
+	PrintToChat(client, "[SM] !hide to hide other players. If the HUD is broken (gray square in the middle), type !fix");
 
 	return Plugin_Continue;
 }

@@ -7,6 +7,8 @@ A stripped down version of [shavit's bhop timer](https://github.com/shavitush/bh
   - Removes the resupply zone, to prevent faster refire rates using `load_itempreset`
     - Gives the Detonator various attributes as a replacement
   - Nullifies damage and collision between players, as well as fall damage
+  - Removes Pyro hurt sounds
+- Includes the [TF2 Hide](https://github.com/JoinedSenses/TF2-Hide) plugin, used to optionally hide other players
 
 # Requirements (on top of bhop timer's requirements)
 - [TF2Attributes](https://github.com/FlaminSarge/tf2attributes)
